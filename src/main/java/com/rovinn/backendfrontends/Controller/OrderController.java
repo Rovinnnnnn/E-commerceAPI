@@ -6,6 +6,7 @@ import com.rovinn.backendfrontends.model.OrderResponseDTO;
 import com.rovinn.backendfrontends.model.OrderStatus;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -18,8 +19,9 @@ public class OrderController {
         this.orderService = orderService;
     }
     @PostMapping
-    public ResponseEntity<OrderResponseDTO> createOrder(@Valid @RequestBody OrderRequestDTO orderRequestDTO ,String userEmail) {
-        return ResponseEntity.ok(orderService.createOrder(orderRequestDTO,userEmail));
+    public ResponseEntity<OrderResponseDTO> createOrder(@Valid @RequestBody OrderRequestDTO orderRequestDTO, Authentication authentication) {
+        String userEmail = authentication.getName();
+        return ResponseEntity.ok(orderService.createOrder(orderRequestDTO, userEmail));
     }
     @GetMapping
     public ResponseEntity<List<OrderResponseDTO>> getAllOrders() {
